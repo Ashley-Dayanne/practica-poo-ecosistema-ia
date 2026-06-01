@@ -2,6 +2,14 @@ package com.ia.modelos;
 
 class ModeloIA {
 
+    protected void aumentarPrecision(double incremento) {
+
+    precision += incremento;
+
+    if (precision > 100.0) {
+        precision = 100.0;
+    }
+}
     // Atributos privados (Encapsulación)
     private String nombre;
     private double precision;
