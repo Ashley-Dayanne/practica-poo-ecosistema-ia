@@ -1,0 +1,14 @@
+package com.ia.interfaces;
+
+import com.ia.interfaces.Tokenizador;
+
+public class TokenizadorHuggingFace implements Tokenizador {
+
+    @Override
+    public String[] dividirTexto(String parrafo) {
+
+        return parrafo
+                .replace("inteligencia", "intel igencia")
+                .split(" ");
+    }
+}
