@@ -26,5 +26,13 @@ public void mostrarMetricas() {
     System.out.println("==============================");
 }
 ```
+@Override
+public void ajustarPesos(double tasaAprendizaje) {
 
+    aumentarPrecision(tasaAprendizaje * 50);
+
+    System.out.println(
+            "ArbolDecision optimizó divisiones del árbol."
+    );
+}
 }
