@@ -42,3 +42,50 @@ Nombre: ArbolDecision
 Precisión: 57.5%
 Épocas entrenadas: 5
 ```
+
+## Fase 3 - Herencia
+
+### Aplicación de la Herencia
+
+Para evitar la duplicación de código y reutilizar la lógica común de los modelos de Inteligencia Artificial, la clase `ModeloIA` fue utilizada como superclase.
+
+A partir de ella se implementaron las siguientes subclases:
+
+* RedNeuronal
+* ArbolDecision
+* ModeloRegresion
+
+Cada una hereda los atributos encapsulados y los métodos generales de entrenamiento y visualización de métricas.
+
+La instrucción `super()` se utilizó en los constructores para inicializar correctamente el estado heredado de la superclase.
+
+Asimismo, cada subclase sobrescribe el método `mostrarMetricas()` mediante `@Override`, llamando primero a `super.mostrarMetricas()` para mostrar la información general y posteriormente imprimiendo sus atributos específicos.
+
+### Evidencia de ejecución
+
+```text
+Red Neuronal entrenado correctamente.
+Árbol de Decisión entrenado correctamente.
+Modelo de Regresión entrenado correctamente.
+
+===== MÉTRICAS GENERALES =====
+Nombre: Red Neuronal
+Precisión: 54.0%
+Épocas entrenadas: 2
+Tasa de aprendizaje: 0.2
+Capas ocultas: 5
+
+===== MÉTRICAS GENERALES =====
+Nombre: Árbol de Decisión
+Precisión: 53.0%
+Épocas entrenadas: 2
+Tasa de aprendizaje: 0.15
+Profundidad máxima: 20
+
+===== MÉTRICAS GENERALES =====
+Nombre: Modelo de Regresión
+Precisión: 52.0%
+Épocas entrenadas: 2
+Tasa de aprendizaje: 0.1
+Coeficiente de regularización: 0.01
+```
