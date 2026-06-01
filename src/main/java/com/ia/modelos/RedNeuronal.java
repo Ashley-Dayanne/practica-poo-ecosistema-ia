@@ -1,6 +1,8 @@
 package com.ia.modelos;
 
-public class RedNeuronal extends ModeloIA {
+import com.ia.interfaces.Entrenable;
+
+public class RedNeuronal extends ModeloIA implements Entrenable{
 
 ```
 private int capasOcultas;
@@ -22,5 +24,13 @@ public void mostrarMetricas() {
     System.out.println("==============================");
 }
 ```
+@Override
+public void ajustarPesos(double tasaAprendizaje) {
 
+    aumentarPrecision(tasaAprendizaje * 100);
+
+    System.out.println(
+            "RedNeuronal ajustó pesos usando backpropagation."
+    );
+}
 }
