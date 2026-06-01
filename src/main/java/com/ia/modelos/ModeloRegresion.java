@@ -1,6 +1,6 @@
 package com.ia.modelos;
 
-public class ModeloRegresion extends ModeloIA {
+public class ModeloRegresion extends ModeloIA implements Entrenable {
 
 ```
 private double coeficienteRegularizacion;
