@@ -1,34 +1,36 @@
 package com.ia.modelos;
 
-public class ArbolDecision extends ModeloIA {
+import com.ia.interfaces.Entrenable;
 
-```
-private int profundidadMaxima;
+public class ArbolDecision extends ModeloIA implements Entrenable {
 
-public ArbolDecision(String nombre,
-                     double tasaAprendizaje,
-                     int profundidadMaxima) {
+    private int profundidadMaxima;
 
-    super(nombre, tasaAprendizaje);
-    this.profundidadMaxima = profundidadMaxima;
-}
+    public ArbolDecision(String nombre, double tasaAprendizaje, int profundidadMaxima) {
+        super(nombre, tasaAprendizaje);
+        this.profundidadMaxima = profundidadMaxima;
+    }
 
-@Override
-public void mostrarMetricas() {
+    // IMPLEMENTACIÓN OBLIGATORIA DEL MÉTODO ABSTRACTO DE MODELOIA
+    @Override
+    public void entrenar() {
+        registrarEpoca();
+        // Lógica basada en profundidad máxima
+        double mejora = (profundidadMaxima * 0.5) + (getTasaAprendizaje() * 5);
+        aumentarPrecision(mejora);
+        System.out.println(getNombre() + " calculó la ganancia de información (Entropía).");
+    }
 
-    super.mostrarMetricas();
+    @Override
+    public void ajustarPesos(double tasaAprendizaje) {
+        aumentarPrecision(tasaAprendizaje * 50);
+        System.out.println("ArbolDecision optimizó divisiones del árbol.");
+    }
 
-    System.out.println("Profundidad máxima: " + profundidadMaxima);
-    System.out.println("==============================");
-}
-```
-@Override
-public void ajustarPesos(double tasaAprendizaje) {
-
-    aumentarPrecision(tasaAprendizaje * 50);
-
-    System.out.println(
-            "ArbolDecision optimizó divisiones del árbol."
-    );
-}
+    @Override
+    public void mostrarMetricas() {
+        super.mostrarMetricas();
+        System.out.println("Profundidad máxima: " + profundidadMaxima);
+        System.out.println("==============================");
+    }
 }
