@@ -1,6 +1,6 @@
 package com.ia.modelos;
 
-class ModeloIA {
+public abstract class ModeloIA {
 
     protected void aumentarPrecision(double incremento) {
 
@@ -62,22 +62,7 @@ class ModeloIA {
     }
 
     // Método entrenar
-    public void entrenar() {
-
-        epocasEntrenadas++;
-
-        // Simulación de aumento de precisión
-        double mejora = tasaAprendizaje * 10;
-
-        precision += mejora;
-
-        // Evitar superar 100%
-        if (precision > 100.0) {
-            precision = 100.0;
-        }
-
-        System.out.println(nombre + " fue entrenado correctamente.");
-    }
+public abstract void entrenar();
 
     // Mostrar métricas
     public void mostrarMetricas() {
