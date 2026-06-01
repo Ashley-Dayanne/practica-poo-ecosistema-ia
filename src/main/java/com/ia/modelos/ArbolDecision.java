@@ -1,6 +1,6 @@
 package com.ia.modelos;
 
-public class ArbolDecision extends ModeloIA {
+public class ArbolDecision extends ModeloIA implements Entrenable {
 
 ```
 private int profundidadMaxima;
