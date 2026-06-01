@@ -1,37 +1,44 @@
 package com.ia.aplicacion;
-import com.ia.modelos.ModeloIA;
+
+import com.ia.modelos.ArbolDecision;
+import com.ia.modelos.ModeloRegresion;
+import com.ia.modelos.RedNeuronal;
 
 public class SimuladorIA {
 
-    public static void main(String[] args) {
+```
+public static void main(String[] args) {
 
-        // Crear objetos
-        ModeloIA redNeuronal = new ModeloIA("RedNeuronal", 0.2);
-        ModeloIA arbolDecision = new ModeloIA("ArbolDecision", 0.15);
+    RedNeuronal red = new RedNeuronal(
+            "Red Neuronal",
+            0.2,
+            5
+    );
 
-        // Mostrar estado inicial
-        redNeuronal.mostrarMetricas();
-        arbolDecision.mostrarMetricas();
+    ArbolDecision arbol = new ArbolDecision(
+            "Árbol de Decisión",
+            0.15,
+            20
+    );
 
-        // Intentar asignar valor inválido
-        System.out.println("\nIntentando asignar tasa inválida...");
-        redNeuronal.setTasaAprendizaje(-0.5);
+    ModeloRegresion regresion = new ModeloRegresion(
+            "Modelo de Regresión",
+            0.1,
+            0.01
+    );
 
-        // Entrenamiento
-        System.out.println("\n=== INICIANDO ENTRENAMIENTO ===");
+    red.entrenar();
+    arbol.entrenar();
+    regresion.entrenar();
 
-        for (int i = 1; i <= 5; i++) {
+    red.entrenar();
+    arbol.entrenar();
+    regresion.entrenar();
 
-            System.out.println("\nEntrenamiento #" + i);
+    red.mostrarMetricas();
+    arbol.mostrarMetricas();
+    regresion.mostrarMetricas();
+}
+```
 
-            redNeuronal.entrenar();
-            arbolDecision.entrenar();
-        }
-
-        // Mostrar resultados finales
-        System.out.println("\n=== RESULTADOS FINALES ===");
-
-        redNeuronal.mostrarMetricas();
-        arbolDecision.mostrarMetricas();
-    }
 }
