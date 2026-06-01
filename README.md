@@ -89,3 +89,30 @@ Precisión: 52.0%
 Tasa de aprendizaje: 0.1
 Coeficiente de regularización: 0.01
 ```
+## Fase 4 - Polimorfismo
+
+### Aplicación de Interfaces
+
+Se implementó la interfaz `Entrenable` para desacoplar el proceso de optimización de los modelos concretos.
+
+Las clases `RedNeuronal`, `ArbolDecision` y `ModeloRegresion` implementan el mismo contrato, permitiendo que el simulador las procese de forma uniforme mediante una colección de tipo `List<Entrenable>`.
+
+También se implementó la interfaz `Tokenizador`, permitiendo intercambiar dinámicamente distintos algoritmos de procesamiento de texto sin modificar la lógica principal del simulador.
+
+### Evidencia de ejecución
+
+```text
+=== ENTRENAMIENTO POLIMÓRFICO ===
+
+RedNeuronal ajustó pesos usando backpropagation.
+ArbolDecision optimizó divisiones del árbol.
+ModeloRegresion actualizó coeficientes.
+
+=== TOKENIZACIÓN ===
+
+Tokenizador Básico:
+[La, inteligencia, artificial, transforma, industrias]
+
+Tokenizador HuggingFace:
+[La, intel, igencia, artificial, transforma, industrias]
+```
