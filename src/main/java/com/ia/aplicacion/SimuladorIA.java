@@ -1,5 +1,5 @@
 package com.ia.aplicacion;
-
+ 
 import com.ia.interfaces.Tokenizador;
 import com.ia.interfaces.TokenizadorBasico;
 import com.ia.interfaces.TokenizadorHuggingFace;
