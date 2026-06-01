@@ -1,38 +1,36 @@
 package com.ia.modelos;
 
-public class ModeloRegresion extends ModeloIA {
+import com.ia.interfaces.Entrenable;
 
-```
-private double coeficienteRegularizacion;
+public class ModeloRegresion extends ModeloIA implements Entrenable {
 
-public ModeloRegresion(String nombre,
-                       double tasaAprendizaje,
-                       double coeficienteRegularizacion) {
+    private double coeficienteRegularizacion;
 
-    super(nombre, tasaAprendizaje);
-    this.coeficienteRegularizacion = coeficienteRegularizacion;
-}
+    public ModeloRegresion(String nombre, double tasaAprendizaje, double coeficienteRegularizacion) {
+        super(nombre, tasaAprendizaje);
+        this.coeficienteRegularizacion = coeficienteRegularizacion;
+    }
 
-@Override
-public void mostrarMetricas() {
+    // IMPLEMENTACIÓN OBLIGATORIA DEL MÉTODO ABSTRACTO DE MODELOIA
+    @Override
+    public void entrenar() {
+        registrarEpoca();
+        // Lógica matemática basada en regularización
+        double mejora = (1.0 / (coeficienteRegularizacion + 1)) * getTasaAprendizaje() * 8;
+        aumentarPrecision(mejora);
+        System.out.println(getNombre() + " minimizó el error cuadrático medio (MSE).");
+    }
 
-    super.mostrarMetricas();
+    @Override
+    public void ajustarPesos(double tasaAprendizaje) {
+        aumentarPrecision(tasaAprendizaje * 40);
+        System.out.println("ModeloRegresion aplicó regularización de crestas/Lasso.");
+    }
 
-    System.out.println(
-            "Coeficiente de regularización: "
-            + coeficienteRegularizacion
-    );
-
-    System.out.println("==============================");
-}
-```
-@Override
-public void ajustarPesos(double tasaAprendizaje) {
-
-    aumentarPrecision(tasaAprendizaje * 50);
-
-    System.out.println(
-            "ArbolDecision optimizó divisiones del árbol."
-    );
-}
+    @Override
+    public void mostrarMetricas() {
+        super.mostrarMetricas();
+        System.out.println("Coeficiente de regularización: " + coeficienteRegularizacion);
+        System.out.println("==============================");
+    }
 }
