@@ -1,6 +1,6 @@
-package com.ia.tokenizadores;
+package com.ia.interfaces;
 
-import com.ia.contratos.Tokenizador;
+import com.ia.interfaces.Tokenizador;
 
 public class TokenizadorBasico implements Tokenizador {
 
