@@ -110,6 +110,55 @@ ModeloRegresion actualizó coeficientes.
 
 === TOKENIZACIÓN ===
 
+## Fase 5: Abstracción Mediante Clases Abstractas
+
+En esta fase se refactorizó la superclase `ModeloIA` para convertirla en una **Clase Abstracta**, lo que impide por completo la existencia de modelos de IA genéricos e incompletos dentro del simulador. En un entorno real, no se puede ejecutar un "Modelo" sin un algoritmo físico real detrás. Al marcar el método `public abstract void entrenar();` sin cuerpo, obligamos contractualmente a que cada subclase (`RedNeuronal`, `ArbolDecision`, `ModeloRegresion`) defina obligatoriamente su propia lógica matemática y simulación interna de entrenamiento.
+
+### Diferencia entre Clase Abstracta e Interfaz en nuestro Pipeline
+* **Clase Abstracta (`ModeloIA`):** Modela una relación de identidad ("es un"). Comparte tanto estructura (atributos encapsulados como `nombre`, `precision`) como comportamiento común (`mostrarMetricas()`), delegando únicamente algoritmos específicos a los hijos.
+* **Interfaz (`Tokenizador`):** Modela un contrato puro de comportamiento ("puede hacer"). No comparte identidades ni estados, simplemente define una capa abstracta pura de procesamiento intercambiable en tiempo de ejecución.
+
+### Evidencia de ejecución
+```text
+=== 1. ENTRENAMIENTO DIRIGIDO POR ABSTRACCIÓN ===
+Red Neuronal Convolucional ejecutó entrenamiento Forward/Backward propagation.
+
+===== MÉTRICAS DEL MODELO =====
+Nombre: Red Neuronal Convolucional
+Precisión: 53.0%
+Épocas entrenadas: 1
+Tasa de aprendizaje: 0.05
+================================
+Árbol de Fraudes calculó la ganancia de información (Entropía).
+
+===== MÉTRICAS DEL MODELO =====
+Nombre: Árbol de Fraudes
+Precisión: 58.0%
+Épocas entrenadas: 1
+Tasa de aprendizaje: 0.1
+Profundidad máxima: 15
+==============================
+Regresión Logística minimizó el error cuadrático medio (MSE).
+
+===== MÉTRICAS DEL MODELO =====
+Nombre: Regresión Logística
+Precisión: 51.5984%
+Épocas entrenadas: 1
+Tasa de aprendizaje: 0.2
+Coeficiente de regularización: 0.001
+==============================
+
+=== 2. AJUSTE DE PESOS (POLIMORFISMO INTERFACES) ===
+RedNeuronal ajustó pesos usando backpropagation.
+ArbolDecision optimizó divisiones del árbol.
+ModeloRegresion aplicó regularización de crestas/Lasso.
+
+=== 3. PIPELINE DE PROCESAMIENTO DE TEXTO ===
+Tokenizador Básico:
+[La, inteligencia, artificial, transforma, industrias]
+Tokenizador HuggingFace:
+[La, intel, igencia, artificial, transforma, industrias]
+
 Tokenizador Básico:
 [La, inteligencia, artificial, transforma, industrias]
 
