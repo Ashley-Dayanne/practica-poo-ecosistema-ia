@@ -2,7 +2,7 @@ package com.ia.modelos;
 
 import com.ia.interfaces.Entrenable;
 
-public class RedNeuronal extends ModeloIA implements Entrenable {
+public final class RedNeuronal extends ModeloIA implements Entrenable { ... }
 
     private int capasOcultas;
 
