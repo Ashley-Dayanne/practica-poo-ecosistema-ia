@@ -1,8 +1,10 @@
 package com.ia.modelos;
 
+// Importamos la excepción personalizada
+import com.ia.exceptions.IAComponentException;
+
 public abstract class ModeloIA {
 
-    // Cambiamos a protected para que las subclases puedan modificar la precisión directamente
     protected double precision; 
     private String nombre;
     private int epocasEntrenadas;
@@ -13,15 +15,14 @@ public abstract class ModeloIA {
         this.precision = 50.0;
         this.epocasEntrenadas = 0;
 
+        // Modificamos para lanzar excepción si la tasa inicial es inválida
         if (tasaAprendizaje > 0.0 && tasaAprendizaje < 1.0) {
             this.tasaAprendizaje = tasaAprendizaje;
         } else {
-            System.out.println("Tasa inválida. Se asignará 0.1 por defecto.");
-            this.tasaAprendizaje = 0.1;
+            throw new IAComponentException("Error: La tasa de aprendizaje inicial " + tasaAprendizaje + " está fuera del rango permitido (0.0 - 1.0).");
         }
     }
 
-    // MÉTODO ABSTRACTO: No lleva llaves {}, termina en punto y coma.
     public abstract void entrenar();
 
     protected void aumentarPrecision(double incremento) {
@@ -41,11 +42,13 @@ public abstract class ModeloIA {
     public int getEpocasEntrenadas() { return epocasEntrenadas; }
     public double getTasaAprendizaje() { return tasaAprendizaje; }
 
+    // REFACTORIZACIÓN CON 'THROW'
     public void setTasaAprendizaje(double tasa) {
         if (tasa > 0.0 && tasa < 1.0) {
             tasaAprendizaje = tasa;
         } else {
-            System.out.println("Error: la tasa debe ser entre 0 y 1.");
+            // Ya no imprimimos en consola, ahora LANZAMOS el error formalmente
+            throw new IAComponentException("Error: La tasa de aprendizaje " + tasa + " está fuera del rango permitido (0.0 - 1.0).");
         }
     }
 
