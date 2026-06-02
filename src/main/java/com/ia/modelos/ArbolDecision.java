@@ -2,7 +2,7 @@ package com.ia.modelos;
 
 import com.ia.interfaces.Entrenable;
 
-public class ArbolDecision extends ModeloIA implements Entrenable {
+public final class ArbolDecision extends ModeloIA implements Entrenable { ... }
 
     private int profundidadMaxima;
 
