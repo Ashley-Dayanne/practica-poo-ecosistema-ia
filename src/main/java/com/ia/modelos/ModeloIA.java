@@ -1,12 +1,12 @@
 package com.ia.modelos;
 
-// Importamos la excepción personalizada
 import com.ia.exceptions.IAComponentException;
 
-public abstract class ModeloIA {
+// Declaramos la clase como sellada (sealed) y listamos a sus únicos hijos permitidos
+public sealed abstract class ModeloIA permits RedNeuronal, ArbolDecision, ModeloRegresion {
 
     protected double precision; 
-    private String nombre;
+    private final String nombre; // Marcamos como final para mejorar prácticas de SonarQube
     private int epocasEntrenadas;
     private double tasaAprendizaje;
 
@@ -15,11 +15,10 @@ public abstract class ModeloIA {
         this.precision = 50.0;
         this.epocasEntrenadas = 0;
 
-        // Modificamos para lanzar excepción si la tasa inicial es inválida
         if (tasaAprendizaje > 0.0 && tasaAprendizaje < 1.0) {
             this.tasaAprendizaje = tasaAprendizaje;
         } else {
-            throw new IAComponentException("Error: La tasa de aprendizaje inicial " + tasaAprendizaje + " está fuera del rango permitido (0.0 - 1.0).");
+            throw new IAComponentException("Error: La tasa de aprendizaje inicial " + tasaAprendizaje + " está fuera del rango (0.0 - 1.0).");
         }
     }
 
@@ -36,19 +35,16 @@ public abstract class ModeloIA {
         this.epocasEntrenadas++;
     }
 
-    // --- Getters y Setters ---
     public String getNombre() { return nombre; }
     public double getPrecision() { return precision; }
     public int getEpocasEntrenadas() { return epocasEntrenadas; }
     public double getTasaAprendizaje() { return tasaAprendizaje; }
 
-    // REFACTORIZACIÓN CON 'THROW'
     public void setTasaAprendizaje(double tasa) {
         if (tasa > 0.0 && tasa < 1.0) {
             tasaAprendizaje = tasa;
         } else {
-            // Ya no imprimimos en consola, ahora LANZAMOS el error formalmente
-            throw new IAComponentException("Error: La tasa de aprendizaje " + tasa + " está fuera del rango permitido (0.0 - 1.0).");
+            throw new IAComponentException("Error: La tasa de aprendizaje " + tasa + " está fuera del rango (0.0 - 1.0).");
         }
     }
 
