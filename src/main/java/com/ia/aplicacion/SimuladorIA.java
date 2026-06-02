@@ -1,14 +1,11 @@
 package com.ia.aplicacion;
- 
+
+import com.ia.exceptions.IAComponentException; // Importamos la excepción
 import com.ia.interfaces.Tokenizador;
 import com.ia.interfaces.TokenizadorBasico;
 import com.ia.interfaces.TokenizadorHuggingFace;
-import com.ia.modelos.ArbolDecision;
-import com.ia.modelos.ModeloIA;
-import com.ia.modelos.ModeloRegresion;
-import com.ia.modelos.RedNeuronal;
+import com.ia.modelos.*;
 
-// Importaciones explícitas del framework de colecciones de Java
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,60 +16,67 @@ public class SimuladorIA {
 
     public static void main(String[] args) {
 
-        System.out.println("=== 1. ADMINISTRACIÓN DINÁMICA DE MODELOS (LIST) ===");
+        System.out.println("=== FASE 7: CONTROL DE ERRORES Y ROBUSTEZ ===");
 
-        // Declaración e instanciación de la colección genérica List
+        // Creamos el inventario básico
         List<ModeloIA> inventarioModelos = new ArrayList<>();
-
-        // Agregamos componentes dinámicamente sin preocuparnos por un tamaño fijo
-        inventarioModelos.add(new RedNeuronal("Red Neuronal Convolucional", 0.05, 5));
-        inventarioModelos.add(new ArbolDecision("Árbol de Fraudes", 0.1, 15));
-        inventarioModelos.add(new ModeloRegresion("Regresión Logística", 0.2, 0.001));
-
-        // Añadimos un modelo extra para demostrar el crecimiento dinámico de la lista
-        inventarioModelos.add(new RedNeuronal("Red Neuronal Recurrente (LSTM)", 0.08, 3));
-
-        // Lazo polimórfico mediante un ciclo for-each para entrenar y mostrar métricas
-        for (ModeloIA modelo : inventarioModelos) {
-            modelo.entrenar();
-            modelo.mostrarMetricas();
-        }
-
-        System.out.println("\n=== 2. CATÁLOGO INDEXADO DE PROCESADORES (MAP) ===");
-
-        // Creación del mapa para centralizar y registrar los tokenizadores
         Map<String, Tokenizador> catalogoTokenizadores = new HashMap<>();
 
-        // Registro de los componentes asociándolos a una clave semántica única
         catalogoTokenizadores.put("BASICO", new TokenizadorBasico());
         catalogoTokenizadores.put("HUGGING_FACE", new TokenizadorHuggingFace());
 
-        String textoPrueba = "La inteligencia artificial transforma industrias";
+        // -----------------------------------------------------------------
+        // PRUEBA DE ROBUSTEZ 1: Error en Tasa de Aprendizaje (try-catch)
+        // -----------------------------------------------------------------
+        try {
+            System.out.println("\n[Intentando crear una Red Neuronal válida...]");
+            RedNeuronal redValida = new RedNeuronal("Red Convolucional", 0.05, 5);
+            inventarioModelos.add(redValida);
+            System.out.println("-> Modelo añadido con éxito.");
 
-        // Recuperación exitosa del tokenizador desde el mapa mediante su clave
-        System.out.println("Recuperando procesador 'BASICO':");
-        Tokenizador tokBasico = catalogoTokenizadores.get("BASICO");
-        System.out.println(Arrays.toString(tokBasico.dividirTexto(textoPrueba)));
+            System.out.println("\n[Intentando inyectar una tasa de aprendizaje inválida (1.5)...]");
+            // Esto lanzará nuestra IAComponentException de forma inmediata
+            redValida.setTasaAprendizaje(1.5); 
 
-        System.out.println("\nRecuperando procesador 'HUGGING_FACE':");
-        Tokenizador tokHF = catalogoTokenizadores.get("HUGGING_FACE");
-        System.out.println(Arrays.toString(tokHF.dividirTexto(textoPrueba)));
+            // Esta línea no se ejecutará debido al salto al bloque catch
+            System.out.println("Esta línea nunca se imprimirá.");
 
-
-        System.out.println("\n=== 3. OPERACIONES AVANZADAS (FILTRADO POR REGLA DE NEGOCIO) ===");
-        
-        // Umbral específico de precisión para el filtrado
-        double umbralPrecision = 52.0;
-        System.out.println("Filtrando modelos con precisión estrictamente mayor al " + umbralPrecision + "%:");
-        
-        int modelosAprobados = 0;
-        for (ModeloIA modelo : inventarioModelos) {
-            if (modelo.getPrecision() > umbralPrecision) {
-                System.out.println("-> [APROBADO] " + modelo.getNombre() + " | Precisión: " + modelo.getPrecision() + "%");
-                modelosAprobados++;
-            }
+        } catch (IAComponentException e) {
+            System.err.println("\n[REPORTANDO FALLO CONTROLADO]: " + e.getMessage());
         }
+
+        // -----------------------------------------------------------------
+        // PRUEBA DE ROBUSTEZ 2: Error al buscar en el catálogo de Mapas
+        // -----------------------------------------------------------------
+        try {
+            System.out.println("\n[Intentando recuperar un tokenizador inexistente 'OPEN_AI'...]");
+            String claveBuscada = "OPEN_AI";
+            Tokenizador tokenizadorInexistente = catalogoTokenizadores.get(claveBuscada);
+
+            // Validación requerida por el enunciado: si devuelve null, lanzamos excepción
+            if (tokenizadorInexistente == null) {
+                throw new IAComponentException("Error: El componente Tokenizador con la clave '" + claveBuscada + "' no está registrado en el catálogo del sistema.");
+            }
+
+            // No se ejecutará
+            System.out.println(Arrays.toString(tokenizadorInexistente.dividirTexto("Hola")));
+
+        } catch (IAComponentException e) {
+            System.err.println("\n[REPORTANDO FALLO CONTROLADO]: " + e.getMessage());
+        } 
         
-        System.out.println("Total de modelos que superaron el umbral: " + modelosAprobados + " de " + inventarioModelos.size());
+        // -----------------------------------------------------------------
+        // BLOQUE FINALLY: Garantiza la auditoría del sistema
+        // -----------------------------------------------------------------
+        finally {
+            System.out.println("\n=======================================================");
+            System.out.println("AUDITORÍA DE LOGS: La fase de limpieza y verificación del simulador ha concluido.");
+            System.out.println("El sistema se mantiene íntegro y tolerante a fallos.");
+            System.out.println("=======================================================");
+        }
+
+        // Demostramos que el hilo principal del programa NO se detuvo y puede continuar
+        System.out.println("\nEl programa continuó de forma segura después de manejar los errores.");
+        System.out.println("Modelos estables en inventario: " + inventarioModelos.size());
     }
 }
