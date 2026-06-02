@@ -2,7 +2,7 @@ package com.ia.modelos;
 
 import com.ia.interfaces.Entrenable;
 
-public class ModeloRegresion extends ModeloIA implements Entrenable {
+public final class ModeloRegresion extends ModeloIA implements Entrenable { ... }
 
     private double coeficienteRegularizacion;
 
