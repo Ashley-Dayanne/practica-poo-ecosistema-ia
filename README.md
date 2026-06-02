@@ -227,3 +227,33 @@ Filtrando modelos con precisión estrictamente mayor al 52.0%:
 -> [APROBADO] Red Neuronal Recurrente (LSTM) | Precisión: 52.88%
 Total de modelos que superaron el umbral: 3 de 4
 ```
+
+## Fase 7: Tolerancia a Fallos mediante el Manejo de Excepciones
+
+### Justificación del Diseño: Robustez y Resiliencia
+En un entorno donde las soluciones de Inteligencia Artificial consumen hiperparámetros y datos externos inestables, la falta de un control de flujos anómalos puede provocar la caída estrepitosa del sistema en producción. 
+
+Al migrar de simples advertencias en texto al lanzamiento formal de la excepción personalizada `IAComponentException` (de tipo *Unchecked/RuntimeException*), se logra separar por completo el código de detección del error (en `ModeloIA`) del código de resolución del error (en `SimuladorIA`). El uso de bloques `try-catch` asegura que el simulador sea **resiliente**: en lugar de abortar la ejecución, captura la anomalía de manera elegante, documenta el fallo en registros de auditoría y permite que el hilo principal del programa continúe operando con los componentes que sí están íntegros. El bloque `finally` garantiza que los procesos de limpieza o auditoría del sistema se ejecuten siempre, sin importar si el flujo fue exitoso o fallido.
+
+### Evidencia de ejecución
+```text
+=== FASE 7: CONTROL DE ERRORES Y ROBUSTEZ ===
+
+[Intentando crear una Red Neuronal válida...]
+-> Modelo añadido con éxito.
+
+[Intentando inyectar una tasa de aprendizaje inválida (1.5)...]
+
+[REPORTANDO FALLO CONTROLADO]: Error: La tasa de aprendizaje 1.5 está fuera del rango permitido (0.0 - 1.0).
+
+[Intentando recuperar un tokenizador inexistente 'OPEN_AI'...]
+
+[REPORTANDO FALLO CONTROLADO]: Error: El componente Tokenizador con la clave 'OPEN_AI' no está registrado en el catálogo del sistema.
+
+=======================================================
+AUDITORÍA DE LOGS: La fase de limpieza y verificación del simulador ha concluido.
+El sistema se mantiene íntegro y tolerante a fallos.
+=======================================================
+
+El programa continuó de forma segura después de manejar los errores.
+Modelos estables en inventario: 1
